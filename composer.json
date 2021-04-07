@@ -1,12 +1,12 @@
 {
     "name": "xtrees/cms",
-    "description": ":package_description",
+    "description": "cms toolkit for laravel",
     "license": "license",
     "authors": [
         {
-            "name": "author name",
-            "email": "author email",
-            "homepage": "author homepage"
+            "name": "xtrees",
+            "email": "xutao58@qq.com",
+            "homepage": ""
         }
     ],
     "homepage": "https://github.com/xtrees/cms",
