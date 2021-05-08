@@ -13,10 +13,14 @@ class CMSServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'xtrees');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'xtrees');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'XTrees');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'XTrees');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
+        if (config('cms.routes', false)) {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+        }
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
@@ -31,7 +35,7 @@ class CMSServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/cms.php', 'cms');
+        $this->mergeConfigFrom(__DIR__ . '/../config/cms.php', 'cms');
 
         // Register the service the package provides.
         $this->app->singleton('cms', function ($app) {
@@ -44,7 +48,7 @@ class CMSServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return ['cms'];
     }
@@ -58,7 +62,7 @@ class CMSServiceProvider extends ServiceProvider
     {
         // Publishing the configuration file.
         $this->publishes([
-            __DIR__.'/../config/cms.php' => config_path('cms.php'),
+            __DIR__ . '/../config/cms.php' => config_path('cms.php'),
         ], 'cms.config');
 
         // Publishing the views.
