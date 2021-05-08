@@ -22,6 +22,7 @@ class CreateCmsTables extends Migration
             $table->string('summary', 200)->default('');
             $table->unsignedInteger('total')->default(0)->comment('总计文章');
             $table->unsignedInteger('sort')->default(0);
+            $table->unsignedInteger('level')->default(0)->comment('权限等级');
             $table->boolean('display')->default(false);
             $table->timestamps();
         });
@@ -56,9 +57,9 @@ class CreateCmsTables extends Migration
             $table->foreignId('tag_group_id');
             $table->string('name', 100)->unique();
             $table->string('slug', 100)->unique();
-            $table->string('title', 100)->nullable();
-            $table->string('keywords', 100)->nullable();
-            $table->string('summary', 200)->nullable();
+            $table->string('title', 100);
+            $table->string('keywords', 100)->default('');
+            $table->string('summary', 200)->default('');
             $table->unsignedInteger('total')->default(0)->comment('总数');
             $table->integer('sort')->default(0);
             $table->timestamps();
@@ -67,9 +68,9 @@ class CreateCmsTables extends Migration
         Schema::create('tag_groups', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50)->unique();
-            $table->string('title', 100)->nullable();
-            $table->string('keywords', 100)->nullable();
-            $table->string('summary', 200)->nullable();
+            $table->string('title', 100);
+            $table->string('keywords', 100)->default('');
+            $table->string('summary', 200)->default('');
             $table->integer('sort')->default(0);
             $table->timestamps();
         });
@@ -89,6 +90,7 @@ class CreateCmsTables extends Migration
             $table->string('summary', 200)->default('');
             $table->string('template')->default('default');
             $table->json('data');
+            $table->unsignedInteger('level')->default(0)->comment('权限等级');
             $table->timestamps();
         });
 
@@ -97,7 +99,7 @@ class CreateCmsTables extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('content_id');
             $table->text('content')->nullable();
-            $table->unsignedInteger('thumbs-up')->default(0)->comment('点赞');
+            $table->unsignedInteger('likes')->default(0)->comment('点赞');
             $table->boolean('display')->default(true);
             $table->timestamps();
         });
@@ -111,6 +113,7 @@ class CreateCmsTables extends Migration
             $table->string('summary', 200)->default('');
             $table->text('body')->nullable();
             $table->boolean('display')->default(true);
+            $table->unsignedInteger('level')->default(0)->comment('权限等级');
             $table->timestamps();
         });
 
