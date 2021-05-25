@@ -188,16 +188,17 @@ class CreateCmsTables extends Migration
     {
         Schema::dropIfExists('users');
         Schema::dropIfExists('roles');
-        Schema::dropIfExists('user_role');
+        Schema::dropIfExists('favorites');
         Schema::dropIfExists('categories');
         Schema::dropIfExists('contents');
         Schema::dropIfExists('images');
         Schema::dropIfExists('tags');
         Schema::dropIfExists('tag_groups');
-        Schema::dropIfExists('taggable');
+        Schema::dropIfExists('taggables');
         Schema::dropIfExists('pages');
+        Schema::dropIfExists('posts');
         Schema::dropIfExists('comments');
         Schema::dropIfExists('collections');
-        Schema::dropIfExists('content_collection');
+        Schema::dropIfExists('collection_contents');
     }
 }
