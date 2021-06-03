@@ -3,6 +3,7 @@
 namespace XTrees\CMS;
 
 use Illuminate\Support\ServiceProvider;
+use XTrees\CMS\Console\Commands\ExampleDataSeed;
 
 class CMSServiceProvider extends ServiceProvider
 {
@@ -81,6 +82,8 @@ class CMSServiceProvider extends ServiceProvider
         ], 'cms.views');*/
 
         // Registering package commands.
-        // $this->commands([]);
+         $this->commands([
+             ExampleDataSeed::class,
+         ]);
     }
 }

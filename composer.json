@@ -16,7 +16,8 @@
     },
     "autoload": {
         "psr-4": {
-            "XTrees\\CMS\\": "src/"
+            "XTrees\\CMS\\": "src",
+            "XTrees\\CMS\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {

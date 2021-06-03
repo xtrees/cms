@@ -1,6 +1,6 @@
 <?php
 
-namespace XTrees\Database\Factories;
+namespace XTrees\CMS\Database\Factories;
 
 use XTrees\CMS\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,7 +22,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->title(),
+            'name' => $this->faker->word(),
             'slug' => $this->faker->slug(2),
             'title' => $this->faker->domainName,
             'keywords' => $this->faker->words(5, true),
