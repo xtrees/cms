@@ -18,7 +18,7 @@ class CMSServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'XTrees');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        if (config('cms.routes', false)) {
+        if (config('cms.routes.enable', false)) {
             $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
             $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         }
@@ -82,8 +82,8 @@ class CMSServiceProvider extends ServiceProvider
         ], 'cms.views');*/
 
         // Registering package commands.
-         $this->commands([
-             ExampleDataSeed::class,
-         ]);
+        $this->commands([
+            ExampleDataSeed::class,
+        ]);
     }
 }

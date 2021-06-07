@@ -177,6 +177,25 @@ class CreateCmsTables extends Migration
             $table->unique(['content_id', 'collection_id']);
         });
 
+        Schema::create('menus', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 100);
+            $table->string('slug', 100)->unique();
+            $table->timestamps();
+        });
+
+        Schema::create('menu_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('menu_id');
+            $table->string('title', 50);
+            $table->string('icon', 50)->nullable();
+            $table->string('url', 50)->nullable();
+            $table->string('target', 50)->default('_self');
+            $table->bigInteger('parent_id')->nullable();
+            $table->integer('sort')->default(0);
+            $table->boolean('display')->default(true);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -200,5 +219,7 @@ class CreateCmsTables extends Migration
         Schema::dropIfExists('comments');
         Schema::dropIfExists('collections');
         Schema::dropIfExists('collection_contents');
+        Schema::dropIfExists('menus');
+        Schema::dropIfExists('menu_items');
     }
 }

@@ -10,7 +10,7 @@ use XTrees\CMS\Http\Controllers\Web\SitemapController;
 use XTrees\CMS\Http\Controllers\Web\TagController;
 use XTrees\CMS\Http\Controllers\Web\UserController;
 
-Route::group(['middleware' => 'web'], function () {
+Route::group(['middleware' => config('cms.routes.middleware')], function () {
     //home
     Route::get('/', [HomeController::class, 'index'])->name('home');
     //category
