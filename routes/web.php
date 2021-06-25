@@ -21,10 +21,9 @@ Route::group(['middleware' => config('cms.routes.middleware')], function () {
     //recent contents list
     Route::get('contents', [ContentController::class, 'index'])->name('content');
 
-    Route::get('{category:slug}/{id}.html', [ContentController::class, 'show'])
+    Route::get('{category:slug}/{id}.html', [ContentController::class, 'show'])->name('content.show')
         ->where('category', '[0-9a-z\-]+')
-        ->where('id', '[0-9]+')
-        ->name('content.show');
+        ->where('id', '[0-9]+');
 
     Route::get('tags', [TagController::class, 'index'])->name('tag');
     Route::get('tags/{slug}', [TagController::class, 'show'])->name('tag.show');
@@ -64,10 +63,9 @@ Route::group(['middleware' => config('cms.routes.middleware')], function () {
             ->middleware('guest')
             ->name('password.reset');
         Route::post('/reset-password', [UserController::class, 'storeNewPassword'])
-            ->middleware('guest')
-            ->name('password.update');
+            ->name('password.update')
+            ->middleware('guest');
     });
-
 
 
     Route::group(['prefix' => 'sitemap'], function () {
@@ -76,11 +74,11 @@ Route::group(['middleware' => config('cms.routes.middleware')], function () {
             ->where('page', '[0-9]+')
             ->name('sitemap.content');
         Route::get('tag-{page}.xml', [SitemapController::class, 'tag'])
-            ->where('page', '[0-9]+')
-            ->name('sitemap.tag');
+            ->name('sitemap.tag')
+            ->where('page', '[0-9]+');
         Route::get('page-{page}.xml', [SitemapController::class, 'page'])
-            ->where('page', '[0-9]+')
-            ->name('sitemap.tag');
+            ->name('sitemap.tag')
+            ->where('page', '[0-9]+');
     });
 
 });

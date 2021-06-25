@@ -2,8 +2,10 @@
 
 namespace XTrees\CMS;
 
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use XTrees\CMS\Console\Commands\ExampleDataSeed;
+use XTrees\CMS\Facades\CMSFacade;
 
 class CMSServiceProvider extends ServiceProvider
 {
@@ -14,8 +16,8 @@ class CMSServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'XTrees');
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'XTrees');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'cms');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'cms');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         if (config('cms.routes.enable', false)) {
@@ -42,6 +44,9 @@ class CMSServiceProvider extends ServiceProvider
         $this->app->singleton('cms', function ($app) {
             return new CMS;
         });
+
+        $loader = AliasLoader::getInstance();
+        $loader->alias('CMS', CMSFacade::class);
     }
 
     /**

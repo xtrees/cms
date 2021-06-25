@@ -40,10 +40,9 @@ class CreateCmsTables extends Migration
             $table->timestamps();
         });
 
-
         Schema::create('favorites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->index();
             $table->morphs('favoriteable');
             $table->timestamps();
         });
@@ -80,10 +79,9 @@ class CreateCmsTables extends Migration
             $table->timestamps();
         });
 
-
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->morphs('imageable');
+            $table->foreignId('content_id');
             $table->string('storage', 20)->default('local');
             $table->string('path');
             $table->boolean('cover')->default(false);
@@ -95,12 +93,13 @@ class CreateCmsTables extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tag_group_id');
-            $table->string('name', 100)->unique();
+            $table->string('name', 50);
             $table->string('slug', 100)->unique();
             $table->string('title', 100);
             $table->string('keywords', 100)->default('');
             $table->string('summary', 200)->default('');
             $table->unsignedInteger('total')->default(0)->comment('总数');
+            $table->unsignedTinyInteger('position')->default(0)->comment('位置');
             $table->boolean('display')->default(true);
             $table->integer('sort')->default(0);
             $table->timestamps();
@@ -108,7 +107,8 @@ class CreateCmsTables extends Migration
 
         Schema::create('tag_groups', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50)->unique();
+            $table->string('name', 50);
+            $table->string('slug', 100)->unique();
             $table->string('title', 100);
             $table->string('keywords', 100)->default('');
             $table->string('summary', 200)->default('');

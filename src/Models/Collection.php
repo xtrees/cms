@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Collection extends Model
 {
-    protected $fillable = ['name', 'title', 'keywords', 'summary', 'sort'];
+    protected $fillable = ['name', 'slug', 'title', 'keywords', 'summary', 'sort'];
 
     public function contents(): BelongsToMany
     {
-        return $this->belongsToMany(Content::class, 'content_collection');
+        return $this->belongsToMany(Content::class, 'collection_contents')->withPivot('sort');
     }
 }
