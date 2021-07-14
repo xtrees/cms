@@ -29,3 +29,8 @@ function obg($obj, $key, $default = null)
 {
     return data_get($obj, $key, $default);
 }
+
+function page_title($page = 1): string
+{
+    return "第{$page}页";
+}

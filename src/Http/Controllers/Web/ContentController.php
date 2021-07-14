@@ -16,7 +16,6 @@ class ContentController extends WebController
 
     public function show(Category $category, Content $content)
     {
-        
-    }
 
+    }
 }
