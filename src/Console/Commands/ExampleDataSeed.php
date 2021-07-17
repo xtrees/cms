@@ -42,7 +42,7 @@ class ExampleDataSeed extends Command
      */
     public function handle()
     {
-        Category::factory()->count(5)->create();
+        Category::factory()->count(3)->create();
         Content::factory()->count(200)->create();
 
         $this->createCollections();

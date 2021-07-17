@@ -24,7 +24,7 @@ class ContentFactory extends Factory
     {
 
         return [
-            'category_id' => mt_rand(1, 5),
+            'category_id' => mt_rand(1, 3),
             'type' => \Arr::random(Content::TYPE_KEYS),
             'slug' => $this->faker->slug(5),
             'title' => $this->faker->sentence,

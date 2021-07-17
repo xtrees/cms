@@ -21,7 +21,8 @@ Route::group(['middleware' => config('cms.routes.middleware')], function () {
     //recent contents list
     Route::get('contents', [ContentController::class, 'index'])->name('content');
 
-    Route::get('{category:slug}/{id}.html', [ContentController::class, 'show'])->name('content.show')
+    Route::get('{category:slug}/{content:id}.html', [ContentController::class, 'show'])
+        ->name('content.show')
         ->where('category', '[0-9a-z\-]+')
         ->where('id', '[0-9]+');
 

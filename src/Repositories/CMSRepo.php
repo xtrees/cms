@@ -2,7 +2,9 @@
 
 namespace XTrees\CMS\Repositories;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use XTrees\CMS\Models\Category;
 use XTrees\CMS\Models\Collection;
 use XTrees\CMS\Models\Content;
@@ -22,7 +24,7 @@ class CMSRepo
     /**
      * find category by slug
      * @param string $slug
-     * @return Category|object|null
+     * @return Builder|Model|object|null
      */
     public function categorySlug(string $slug)
     {
@@ -39,6 +41,42 @@ class CMSRepo
     }
 
     /**
+     * @param Content $content
+     * @param $page
+     * @param int $pageSize
+     * @return LengthAwarePaginator
+     */
+    public function galleries(Content $content, $page, $pageSize = 20): LengthAwarePaginator
+    {
+        return $content->gallery()
+            ->orderBy('sort')
+            ->where('display', true)
+            ->paginate($pageSize, ['*'], 'page', $page);
+    }
+
+    public function prevContent(Category $category, Content $content)
+    {
+        return $this->contentBuilder()->where('category_id', $category->id)
+            ->where('id', '<', $content->id)
+            ->first();
+    }
+
+    public function nextContent(Category $category, Content $content)
+    {
+        return $this->contentBuilder()->where('category_id', $category->id)
+            ->where('id', '>', $content->id)
+            ->first();
+    }
+
+    public function relatedContent(Category $category, Content $content, $limit = 8)
+    {
+        return $this->contentBuilder()->where('category_id', $category->id)
+            ->inRandomOrder()
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
      * global category query builder
      * @return Builder
      */
@@ -52,19 +90,23 @@ class CMSRepo
 
     /**
      * @param string $slug
+     * @param int $limit
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function collectionBySlug(string $slug): \Illuminate\Database\Eloquent\Collection
+    public function collectionBySlug(string $slug, int $limit = 0): \Illuminate\Database\Eloquent\Collection
     {
         /** @var Collection $collection */
         $collection = Collection::query()->where('slug', $slug)->first();
         if ($collection) {
-            return $collection->contents()
+            $builder = $collection->contents()
                 ->where('display', true)
                 ->with('category')
                 ->with('thumbnail')
-                ->orderBy('sort')
-                ->get();
+                ->orderBy('sort');
+            if ($limit) {
+                $builder = $builder->limit($limit);
+            }
+            return $builder->get();
         }
         return new \Illuminate\Database\Eloquent\Collection();
     }
