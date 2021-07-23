@@ -15,6 +15,11 @@ return [
         'image_holder' => env('IMAGE_HOLDER', 'https://via.placeholder.com/300.png'),
     ],
 
+    'image' => [
+        'holder' => env('CMS_IMAGE_HOLDER', 'https://via.placeholder.com/300.png'),
+        'cover' => env('CMS_IMAGE_COVER', 'https://via.placeholder.com/300.png'),//default cover
+    ],
+
     'useragent' => [
         'search' => ['baidu', '360'],
     ]

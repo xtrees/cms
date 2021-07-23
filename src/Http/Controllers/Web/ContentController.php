@@ -20,7 +20,7 @@ class ContentController extends WebController
     {
         $view = $content->view();
         $page = $request->input('page', 1);
-        $galleries = [];
+        $galleries = $video = null;
         if ($content->isGallery()) {
             $galleries = $repo->galleries($content, $page, 5);
         }
@@ -28,7 +28,7 @@ class ContentController extends WebController
         $prev = $repo->prevContent($category, $content);
         $next = $repo->nextContent($category, $content);
         $related = $repo->relatedContent($category, $content);
-
-        return cms_view($view, compact('category', 'content', 'galleries', 'page'));
+        return cms_view($view,
+            compact('category', 'content', 'video', 'galleries', 'page', 'prev', 'next', 'related'));
     }
 }

@@ -5,6 +5,7 @@ namespace XTrees\CMS\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\FilesystemAdapter;
+use XTrees\CMS\Database\Factories\ImageFactory;
 
 /**
  * XTrees\CMS\Models\Image
@@ -41,10 +42,17 @@ class Image extends Model
 
     use HasFactory;
 
+    public static function factory(...$parameters): ImageFactory
+    {
+        return ImageFactory::new();
+    }
 
     public function getUrlAttribute(): string
     {
         $storage = $this->getStorage();
+        if (\Str::startsWith($this->path,'http')){
+            return  $this->path;
+        }
         if ($this->path) {
             return $storage->url($this->path);
         }

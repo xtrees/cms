@@ -3,10 +3,10 @@
 namespace XTrees\CMS\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 use XTrees\CMS\Models\Category;
 use XTrees\CMS\Models\Collection;
 use XTrees\CMS\Models\Content;
+use XTrees\CMS\Models\Image;
 use XTrees\CMS\Models\Menu;
 
 class ExampleDataSeed extends Command
@@ -43,7 +43,22 @@ class ExampleDataSeed extends Command
     public function handle()
     {
         Category::factory()->count(3)->create();
-        Content::factory()->count(200)->create();
+        $contents = Content::factory()->count(1000)->create();
+        /** @var Content $content */
+        foreach ($contents as $content) {
+            Image::factory()->state([
+                'cover' => 1,
+                'content_id' => $content->id,
+            ])->count(1)->create();
+
+            if ($content->isGallery()) {
+                //generate gallery images
+                $total = mt_rand(5, 15);
+                Image::factory()->state([
+                    'content_id' => $content->id,
+                ])->count($total)->create();
+            }
+        }
 
         $this->createCollections();
         $this->createMenus();
@@ -70,12 +85,12 @@ class ExampleDataSeed extends Command
                 'slug' => 'rem4',
             ]
         ];
-        $contents = range(1, 200);
         //创建默认的文章分组
         foreach ($collections as $collection) {
             /** @var Collection $co */
             $co = Collection::query()->firstOrCreate($collection);
-            $co->contents()->sync(Arr::random($contents, 20));
+            $contents =Content::query()->inRandomOrder()->take(12)->get();
+            $co->contents()->sync($contents);
         }
     }
 

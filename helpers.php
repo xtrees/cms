@@ -30,14 +30,24 @@ function obg($obj, $key, $default = null)
     return data_get($obj, $key, $default);
 }
 
-function obj_image($obj, $key)
+function image_get($obj, $key)
 {
-    return data_get($obj, $key, config('cms.view.image_holder'));
+    return data_get($obj, $key, config('cms.image.holder'));
+}
+
+function cover_get($content, $key)
+{
+    return data_get($content, $key, config('cms.image.cover'));
+}
+
+function lazy($url)
+{
+    return is_search_engine() ? $url : config('cms.image.cover');
 }
 
 function page_title($page = 1): string
 {
-    return "第{$page}页";
+    return "第{$page}页-";
 }
 
 function is_search_engine()
@@ -52,17 +62,5 @@ function is_search_engine()
             }
         }
     }
-
     return config('cms.useragent.engine', false);
-}
-
-function lazy($url): HtmlString
-{
-    if (is_search_engine()) {
-        $html = " src=\"$url\" ";
-    } else {
-        $default = config('cms.view.image_holder');
-        $html = " src=\"$default\" data-src=\"$url\" ";
-    }
-    return new HtmlString($html);
 }
