@@ -34,8 +34,9 @@
                 @endguest
                 @auth
                     <li>
-                        <a>
-                            {{ Auth::user()->name }}<i class="iconfont icon-icon-test4 avatar"></i>
+                        <a href="#" class="avatar" title="我的">
+                            <span>我的</span>
+                            <i class="iconfont icon-icon-test4"></i>
                         </a>
                     </li>
                 @endauth

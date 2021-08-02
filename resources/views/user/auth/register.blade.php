@@ -76,7 +76,7 @@
     </style>
 @endsection
 @section('body')
-    <section class="login-clean" style="margin-top: 10%">
+    <section class="login-clean" style="margin-top: 5%">
         <form method="post" action="{{ route('users.register') }}">
             @csrf
             <h3 class="">注册 / Register</h3>
