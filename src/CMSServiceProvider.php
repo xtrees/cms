@@ -3,9 +3,11 @@
 namespace XTrees\CMS;
 
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use XTrees\CMS\Console\Commands\ExampleDataSeed;
 use XTrees\CMS\Facades\CMSFacade;
+use XTrees\CMS\Policies\ContentPolicy;
 
 class CMSServiceProvider extends ServiceProvider
 {
@@ -90,5 +92,27 @@ class CMSServiceProvider extends ServiceProvider
         $this->commands([
             ExampleDataSeed::class,
         ]);
+    }
+
+
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array
+     */
+    protected $policies = [
+        ContentPolicy::class
+    ];
+
+    /**
+     * Register the application's policies.
+     *
+     * @return void
+     */
+    public function registerPolicies()
+    {
+        foreach ($this->policies as $key => $value) {
+            Gate::policy($key, $value);
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace XTrees\CMS\Http\Controllers;
 
-class Controller
+class Controller extends \Illuminate\Routing\Controller
 {
 
 }

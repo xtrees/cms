@@ -1,5 +1,9 @@
 <?php
 
+use XTrees\CMS\Http\Controllers\Web\Auth\AuthenticatedSessionController;
+use XTrees\CMS\Http\Controllers\Web\Auth\NewPasswordController;
+use XTrees\CMS\Http\Controllers\Web\Auth\PasswordResetLinkController;
+use XTrees\CMS\Http\Controllers\Web\Auth\RegisteredUserController;
 use XTrees\CMS\Http\Controllers\Web\AuthController;
 use XTrees\CMS\Http\Controllers\Web\CategoryController;
 use XTrees\CMS\Http\Controllers\Web\ContentController;
@@ -36,36 +40,23 @@ Route::group(['middleware' => config('cms.routes.middleware')], function () {
     Route::get('{page:slug}.html', [PageController::class, 'show'])->name('page');
 
 
-    Route::prefix('users')->group(function () {
+    Route::prefix('users')->middleware('guest')->group(function () {
         //注册
-        Route::get('/register', [UserController::class, 'create'])
-            ->middleware('guest')
-            ->name('users.register');
-
-        Route::post('/register', [UserController::class, 'store'])
-            ->middleware('guest');
-
+        Route::get('/register', [RegisteredUserController::class, 'create'])->name('users.register');
+        Route::post('/register', [RegisteredUserController::class, 'store']);
         //登录
-        Route::get('/login', [AuthController::class, 'create'])
-            ->middleware('guest')
-            ->name('login');
-
-        Route::post('/login', [AuthController::class, 'store'])
-            ->middleware('guest');
-
+        Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('users.login');
+        Route::post('/login', [AuthenticatedSessionController::class, 'store']);
         //忘记密码
-        Route::get('/forgot-password', [UserController::class, 'createPasswordReset'])
-            ->middleware('guest')
-            ->name('password.request');
-        Route::post('/forgot-password', [UserController::class, 'storePasswordReset'])
-            ->middleware('guest')
-            ->name('password.email');
-        Route::get('/reset-password/{token}', [UserController::class, 'createNewPassword'])
-            ->middleware('guest')
-            ->name('password.reset');
-        Route::post('/reset-password', [UserController::class, 'storeNewPassword'])
-            ->name('password.update')
-            ->middleware('guest');
+        Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('users.password.request');
+        Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('users.password.email');
+        //重置密码
+        Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('users.password.reset');
+        Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('users.password.update');
+    });
+
+    Route::prefix('users')->middleware('auth')->group(function () {
+        Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('users.logout');
     });
 
 
@@ -83,3 +74,5 @@ Route::group(['middleware' => config('cms.routes.middleware')], function () {
     });
 
 });
+
+
