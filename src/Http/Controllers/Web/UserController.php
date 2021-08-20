@@ -4,38 +4,22 @@
 namespace XTrees\CMS\Http\Controllers\Web;
 
 
+use Illuminate\Http\Request;
+
 class UserController extends WebController
 {
-    /**
-     * 用户注册
-     */
-    public function create()
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        return view('cms::user.index', compact('user'));
+    }
+
+    public function update(Request $request)
     {
 
     }
 
-    public function store()
-    {
-
-    }
-
-
-    public function createPasswordReset()
-    {
-
-    }
-
-    public function storePasswordReset()
-    {
-
-    }
-
-    public function createNewPassword()
-    {
-
-    }
-
-    public function storeNewPassword()
+    public function password()
     {
 
     }

@@ -19,15 +19,16 @@ class CreateCmsTables extends Migration
             $table->string('name', 50)->unique();
             $table->string('email', 100)->unique();
             $table->string('phone', 11)->nullable();
+            $table->tinyInteger('sex')->default(-1)->comment('-1保密0女1男');
             $table->string('avatar')->nullable();
             $table->string('password', 200);
             $table->rememberToken();
-            $table->timestamp('email_verified_at')->nullable();
             $table->unsignedInteger('coins')->default(0)->comment('金币数量');
             $table->boolean('blocked')->default(0)->comment('锁定');
-            $table->string('source', 20)->default('web')->comment('注册来源');
-            $table->timestamp('activated_at')->nullable()->comment('活跃时间');
             $table->boolean('robot')->default(false);
+            $table->string('source', 20)->default('web')->comment('注册来源');
+            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('activated_at')->nullable()->comment('活跃时间');
             $table->timestamp('role_expired_at')->nullable();
             $table->timestamps();
         });
@@ -196,6 +197,52 @@ class CreateCmsTables extends Migration
             $table->boolean('display')->default(true);
             $table->timestamps();
         });
+
+        Schema::create('coin_transactions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id');
+            $table->tinyInteger('type')->default(0);
+            $table->unsignedInteger('amount')->default(0);
+            $table->morphs('purchasable');
+            $table->timestamps();
+        });
+        Schema::create('offers', function (Blueprint $table) {
+            $table->id();
+            $table->tinyInteger('type')->default(0);
+            $table->unsignedDecimal('origin')->default(0)->comment('原价');
+            $table->unsignedDecimal('price')->default(0)->comment('单价');
+            $table->foreignId('role_id')->nullable();
+            $table->unsignedInteger('duration')->default(0)->comment('时长,day|金币数量');
+            $table->text('detail')->nullable();
+            $table->integer('sort')->default(0);
+            $table->boolean('display')->default(true);
+            $table->timestamps();
+        });
+
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id');
+            $table->foreignId('offer_id');
+            $table->foreignId('coupon_id')->nullable()->comment('优惠券');
+            $table->string('no', 32);
+            $table->string('trade_no', 64)->nullable();
+            $table->unsignedDecimal('price')->default(0);
+            $table->unsignedInteger('amount')->default(1)->comment('数量');
+            $table->unsignedDecimal('discount')->default(0)->comment('优惠金额');
+            $table->unsignedDecimal('total')->default(0)->comment('总计');
+            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('paid_at')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('purchased_contents', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id');
+            $table->foreignId('content_id');
+            $table->unsignedInteger('coins')->default(0);
+            $table->timestamps();
+        });
+
     }
 
     /**
@@ -221,5 +268,9 @@ class CreateCmsTables extends Migration
         Schema::dropIfExists('collection_contents');
         Schema::dropIfExists('menus');
         Schema::dropIfExists('menu_items');
+        Schema::dropIfExists('coin_transactions');
+        Schema::dropIfExists('offers');
+        Schema::dropIfExists('orders');
+        Schema::dropIfExists('purchased_contents');
     }
 }

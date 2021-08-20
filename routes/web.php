@@ -4,15 +4,16 @@ use XTrees\CMS\Http\Controllers\Web\Auth\AuthenticatedSessionController;
 use XTrees\CMS\Http\Controllers\Web\Auth\NewPasswordController;
 use XTrees\CMS\Http\Controllers\Web\Auth\PasswordResetLinkController;
 use XTrees\CMS\Http\Controllers\Web\Auth\RegisteredUserController;
-use XTrees\CMS\Http\Controllers\Web\AuthController;
 use XTrees\CMS\Http\Controllers\Web\CategoryController;
 use XTrees\CMS\Http\Controllers\Web\ContentController;
+use XTrees\CMS\Http\Controllers\Web\HistoryController;
 use XTrees\CMS\Http\Controllers\Web\HomeController;
 use XTrees\CMS\Http\Controllers\Web\PageController;
 use XTrees\CMS\Http\Controllers\Web\SearchController;
 use XTrees\CMS\Http\Controllers\Web\SitemapController;
 use XTrees\CMS\Http\Controllers\Web\TagController;
 use XTrees\CMS\Http\Controllers\Web\UserController;
+use XTrees\CMS\Http\Controllers\Web\WalletController;
 
 Route::group(['middleware' => config('cms.routes.middleware')], function () {
     //home
@@ -55,8 +56,24 @@ Route::group(['middleware' => config('cms.routes.middleware')], function () {
         Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('users.password.update');
     });
 
-    Route::prefix('users')->middleware('auth')->group(function () {
-        Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('users.logout');
+    Route::prefix('users')->middleware('cms.auth')->group(function () {
+        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('users.logout');
+
+        Route::get('home', [UserController::class, 'index'])->name('users.home');
+
+        Route::post('update', [UserController::class, 'update'])->name('users.update');
+        Route::post('password', [UserController::class, 'password'])->name('users.password');
+
+        Route::get('history/purchased', [HistoryController::class, 'purchased'])->name('users.history.purchased');
+        Route::get('history/favorites', [HistoryController::class, 'favorites'])->name('users.history.favorites');
+
+        Route::get('wallet/vip', [WalletController::class, 'vips'])->name('users.wallet.vip');
+        Route::post('wallet/vip', [WalletController::class, 'createVIPOrder']);
+        Route::get('wallet/coins', [WalletController::class, 'coins'])->name('users.wallet.coin');
+        Route::post('wallet/coins', [WalletController::class, 'createCoinOrder']);
+        Route::post('wallet/pay', [WalletController::class, 'pay'])->name('users.wallet.pay');
+        Route::get('wallet/orders', [WalletController::class, 'orders'])->name('users.wallet.order');
+
     });
 
 

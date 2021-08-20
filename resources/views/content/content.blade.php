@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('cms::layout')
 @section('title',page_title($page).obg($content,'title'))
 @section('keywords',obg($content,'keywords'))
 @section('description',obg($content,'summary'))
@@ -61,7 +61,7 @@
                     暂无相关推荐
                 @else
                     @foreach($related as $item)
-                        @include('content.item',$item)
+                        @include('cms::content.item',$item)
                     @endforeach
                 @endif
             </div>
@@ -70,5 +70,5 @@
 @endsection
 
 @section('sidebar')
-    @include('sidebar.main')
+    @include('cms::sidebar.main')
 @endsection

@@ -5,6 +5,7 @@ namespace XTrees\CMS\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * XTrees\CMS\Models\User
@@ -87,5 +88,24 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function getSexAttribute()
+    {
+        $val = data_get($this->attributes, 'sex');
+        return is_null($val) ? -1 : $val;
+    }
+
+    public function getAvatarUrlAttribute()
+    {
+        if ($this->avatar) {
+            if (strpos('http', $this->avatar)) {
+                return $this->avatar;
+            }
+            return Storage::disk('avatar')->url($this->avatar);
+        } else if (config('cms.image.gavatar.on')) {
+            return config('cms.image.gavatar.mirror') . md5($this->email);
+        }
+        return config('cms.image.avatar');
     }
 }

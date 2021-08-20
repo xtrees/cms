@@ -1,7 +1,7 @@
-@extends('content.content')
+@extends('cms::content.content')
 
 @section('contents')
     {!! $content->body !!}
     <br>
-    <br>1
+    <br>
 @endsection

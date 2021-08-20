@@ -12,6 +12,8 @@ class Role extends Model
 {
     const UNLIMITED = -1;
 
+    protected $fillable = ['name', 'icon', 'permission'];
+
     public function unlimited(): bool
     {
         return $this->permission == self::UNLIMITED;

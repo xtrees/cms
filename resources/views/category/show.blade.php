@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('cms::layout')
 @section('title',page_title($page).obg($category,'title'))
 @section('keywords',obg($category,'keywords'))
 @section('description',obg($category,'summary'))

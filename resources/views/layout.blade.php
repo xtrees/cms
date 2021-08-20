@@ -34,7 +34,7 @@
                 @endguest
                 @auth
                     <li>
-                        <a href="#" class="avatar" title="我的">
+                        <a href="{{ route('users.home') }}" class="avatar" title="我的">
                             <span>我的</span>
                             <i class="iconfont icon-icon-test4"></i>
                         </a>

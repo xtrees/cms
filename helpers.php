@@ -40,6 +40,11 @@ function cover_get($content, $key)
     return data_get($content, $key, config('cms.image.cover'));
 }
 
+function avatar_get($content, $key)
+{
+    return data_get($content, $key, config('cms.image.avatar'));
+}
+
 function lazy($url)
 {
     return is_search_engine() ? $url : config('cms.image.cover');
@@ -63,4 +68,10 @@ function is_search_engine()
         }
     }
     return config('cms.useragent.engine', false);
+}
+
+
+function route_active($name): string
+{
+    return Route::is($name) ? 'active' : '';
 }

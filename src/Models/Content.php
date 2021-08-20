@@ -136,13 +136,11 @@ class Content extends Model
     {
         switch ($this->type) {
             case self::GALLERY:
-                return 'content.gallery';
-            case self::ARTICLE:
-                return 'content.article';
+                return 'cms::content.gallery';
             case self::VIDEO:
-                return 'content.video';
+                return 'cms::content.video';
         }
-        return 'article';
+        return 'cms::content.article';
     }
 
     /**

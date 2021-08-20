@@ -8,6 +8,9 @@ use XTrees\CMS\Models\Collection;
 use XTrees\CMS\Models\Content;
 use XTrees\CMS\Models\Image;
 use XTrees\CMS\Models\Menu;
+use XTrees\CMS\Models\Role;
+use Xtrees\LaraSetting\Models\SettingGroup;
+use Xtrees\LaraSetting\Models\SettingModel;
 
 class ExampleDataSeed extends Command
 {
@@ -16,14 +19,14 @@ class ExampleDataSeed extends Command
      *
      * @var string
      */
-    protected $signature = 'cms:example';
+    protected $signature = 'cms:example {--prod}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Command description ';
 
     /**
      * Create a new command instance.
@@ -42,26 +45,32 @@ class ExampleDataSeed extends Command
      */
     public function handle()
     {
-        Category::factory()->count(3)->create();
-        $contents = Content::factory()->count(1000)->create();
-        /** @var Content $content */
-        foreach ($contents as $content) {
-            Image::factory()->state([
-                'cover' => 1,
-                'content_id' => $content->id,
-            ])->count(1)->create();
+        $this->defaultSettings();
+        $this->createRoles();
 
-            if ($content->isGallery()) {
-                //generate gallery images
-                $total = mt_rand(5, 15);
+        if (!$this->option('prod')) {
+            Category::factory()->count(3)->create();
+            $contents = Content::factory()->count(1000)->create();
+            /** @var Content $content */
+            foreach ($contents as $content) {
                 Image::factory()->state([
+                    'cover' => 1,
                     'content_id' => $content->id,
-                ])->count($total)->create();
+                ])->count(1)->create();
+
+                if ($content->isGallery()) {
+                    //generate gallery images
+                    $total = mt_rand(5, 15);
+                    Image::factory()->state([
+                        'content_id' => $content->id,
+                    ])->count($total)->create();
+                }
             }
         }
-
         $this->createCollections();
         $this->createMenus();
+
+
         return 0;
     }
 
@@ -89,7 +98,7 @@ class ExampleDataSeed extends Command
         foreach ($collections as $collection) {
             /** @var Collection $co */
             $co = Collection::query()->firstOrCreate($collection);
-            $contents =Content::query()->inRandomOrder()->take(12)->get();
+            $contents = Content::query()->inRandomOrder()->take(12)->get();
             $co->contents()->sync($contents);
         }
     }
@@ -160,6 +169,58 @@ class ExampleDataSeed extends Command
             if ($menu->wasRecentlyCreated) {
                 $menu->parentItems()->createMany($items);
             }
+        }
+    }
+
+    protected function defaultSettings()
+    {
+        SettingGroup::query()->firstOrCreate([
+            'title' => '网站设置',
+            'key' => 'site',
+            'order' => 1
+        ]);
+
+        $settings = [
+            [
+                'title' => '网站名称',
+                'group' => 'site',
+                'key' => 'name',
+                'type' => 'text',
+                'value' => 'CMS',
+                'eager' => 1
+            ],
+            [
+                'title' => '网站logo',
+                'group' => 'site',
+                'key' => 'logo',
+                'type' => 'text',
+                'value' => '',
+                'eager' => 1
+            ],
+        ];
+
+        foreach ($settings as $setting) {
+            SettingModel::query()->firstOrCreate($setting);
+        }
+    }
+
+    protected function createRoles()
+    {
+        $data = [
+            [
+                'name' => '普通会员',
+                'permission' => 0,
+            ], [
+                'name' => 'VIP',
+                'permission' => 1,
+            ], [
+                'name' => 'SVIP',
+                'permission' => 2,
+            ],
+        ];
+
+        foreach ($data as $datum) {
+            Role::query()->firstOrCreate($datum);
         }
     }
 }

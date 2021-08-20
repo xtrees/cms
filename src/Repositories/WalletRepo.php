@@ -1,0 +1,19 @@
+<?php
+
+
+namespace XTrees\CMS\Repositories;
+
+
+use XTrees\CMS\Models\Offer;
+
+class WalletRepo
+{
+    public function coinOffers()
+    {
+        $offers = Offer::query()
+            ->where('type', Offer::COIN)
+            ->where('display', true)
+            ->orderBy('sort')
+            ->get();
+    }
+}

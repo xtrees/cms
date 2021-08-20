@@ -3,10 +3,12 @@
 namespace XTrees\CMS;
 
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use XTrees\CMS\Console\Commands\ExampleDataSeed;
 use XTrees\CMS\Facades\CMSFacade;
+use XTrees\CMS\Http\Middleware\Authenticate;
 use XTrees\CMS\Policies\ContentPolicy;
 
 class CMSServiceProvider extends ServiceProvider
@@ -22,6 +24,10 @@ class CMSServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'cms');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
+        /** @var Router $router */
+        $router = $this->app->make(Router::class);
+
+        $router->aliasMiddleware('cms.auth',Authenticate::class);
         if (config('cms.routes.enable', false)) {
             $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
             $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');

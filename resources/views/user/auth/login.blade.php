@@ -1,4 +1,4 @@
-@extends('cms::user.layout')
+@extends('cms::user.auth.layout')
 @section('title','注册')
 @section('style')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@pluritech/ionicons@3.0.0/dist/css/ionicons.min.css">
@@ -92,7 +92,7 @@
             <div class="mb-3">
                 <button class="btn btn-primary d-block w-100" type="submit">登录</button>
             </div>
-            <a class="forgot" href="{{ route('users.login') }}">还没有账号，注册?</a>
+            <a class="forgot" href="{{ route('users.register') }}">还没有账号，注册?</a>
         </form>
     </section>
 @endsection

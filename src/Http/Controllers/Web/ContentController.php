@@ -28,7 +28,7 @@ class ContentController extends WebController
         $prev = $repo->prevContent($category, $content);
         $next = $repo->nextContent($category, $content);
         $related = $repo->relatedContent($category, $content);
-        return cms_view($view,
+        return view($view,
             compact('category', 'content', 'video', 'galleries', 'page', 'prev', 'next', 'related'));
     }
 }

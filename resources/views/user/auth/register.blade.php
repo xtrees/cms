@@ -1,4 +1,4 @@
-@extends('cms::user.layout')
+@extends('cms::user.auth.layout')
 @section('title','注册')
 @section('style')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@pluritech/ionicons@3.0.0/dist/css/ionicons.min.css">
