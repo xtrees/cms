@@ -21,9 +21,8 @@ class WalletController extends WebController
      */
     public function coins(WalletRepo $repo)
     {
-        $offers = Offer::query()->
-
-        return view('cms::user.wallet.coin');
+        $offers = $repo->coinOffers();
+        return view('cms::user.wallet.coin', compact('offers'));
     }
 
     /**

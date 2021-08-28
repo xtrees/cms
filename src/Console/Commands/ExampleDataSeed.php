@@ -3,12 +3,15 @@
 namespace XTrees\CMS\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
 use XTrees\CMS\Models\Category;
 use XTrees\CMS\Models\Collection;
 use XTrees\CMS\Models\Content;
 use XTrees\CMS\Models\Image;
 use XTrees\CMS\Models\Menu;
+use XTrees\CMS\Models\Offer;
 use XTrees\CMS\Models\Role;
+use XTrees\CMS\Models\User;
 use Xtrees\LaraSetting\Models\SettingGroup;
 use Xtrees\LaraSetting\Models\SettingModel;
 
@@ -47,10 +50,11 @@ class ExampleDataSeed extends Command
     {
         $this->defaultSettings();
         $this->createRoles();
+        $this->creatOffers();
 
         if (!$this->option('prod')) {
             Category::factory()->count(3)->create();
-            $contents = Content::factory()->count(1000)->create();
+            $contents = Content::factory()->count(100)->create();
             /** @var Content $content */
             foreach ($contents as $content) {
                 Image::factory()->state([
@@ -66,12 +70,22 @@ class ExampleDataSeed extends Command
                     ])->count($total)->create();
                 }
             }
+            $this->createUsers();
         }
         $this->createCollections();
         $this->createMenus();
-
-
         return 0;
+    }
+
+    protected function createUsers()
+    {
+        User::query()->firstOrCreate([
+            'email' => 'admin@admin.com'
+        ], [
+            'name' => '哈哈',
+            'password' => Hash::make('11223344'),
+        ]);
+        User::factory()->count(20)->create();
     }
 
     protected function createCollections()
@@ -209,18 +223,85 @@ class ExampleDataSeed extends Command
         $data = [
             [
                 'name' => '普通会员',
+                'price' => 0,
                 'permission' => 0,
             ], [
                 'name' => 'VIP',
+                'price' => 0.3,
                 'permission' => 1,
             ], [
                 'name' => 'SVIP',
+                'price' => 1,
                 'permission' => 2,
-            ],
+            ]
         ];
 
         foreach ($data as $datum) {
             Role::query()->firstOrCreate($datum);
         }
+    }
+
+    protected function creatOffers()
+    {
+        $coins = [
+            10, 30, 50, 100, 200, 500
+        ];
+        foreach ($coins as $i => $coin) {
+            Offer::query()->firstOrCreate([
+                'type' => Offer::COIN,
+                'duration' => $coin,
+            ], [
+                'origin' => $coin,
+                'price' => $coin,
+                'sort' => $i,
+                'display' => true
+            ]);
+        }
+
+        $vips = [
+            [
+                'attr' => [
+                    'type' => Offer::VIP,
+                    'role_id' => 1,
+                    'duration' => 30,
+                ],
+                'val' => [
+                    'origin' => 25,
+                    'price' => 25,
+                    'sort' => 1,
+                    'display' => true
+                ]
+            ],
+            [
+                'attr' => [
+                    'type' => Offer::VIP,
+                    'role_id' => 1,
+                    'duration' => 180,
+                ],
+                'val' => [
+                    'origin' => 150,
+                    'price' => 128,
+                    'sort' => 2,
+                    'display' => true
+                ]
+            ],
+            [
+                'attr' => [
+                    'type' => Offer::VIP,
+                    'role_id' => 1,
+                    'duration' => 360,
+                ],
+                'val' => [
+                    'origin' => 300,
+                    'price' => 199,
+                    'sort' => 3,
+                    'display' => true
+                ]
+            ],
+        ];
+        foreach ($vips as $vip) {
+            Offer::query()->firstOrCreate($vip['attr'], $vip['val']);
+        }
+
     }
 }

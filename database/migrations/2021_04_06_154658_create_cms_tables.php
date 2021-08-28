@@ -37,6 +37,7 @@ class CreateCmsTables extends Migration
             $table->id();
             $table->string('name', 100);
             $table->string('icon')->nullable();
+            $table->unsigneddecimal('price')->default(0)->comment('每天价格');
             $table->unsignedInteger('permission')->default(0)->comment('权限等级');
             $table->timestamps();
         });
@@ -225,7 +226,7 @@ class CreateCmsTables extends Migration
             $table->foreignId('offer_id');
             $table->foreignId('coupon_id')->nullable()->comment('优惠券');
             $table->string('no', 32);
-            $table->string('trade_no', 64)->nullable();
+            $table->string('outer_no', 64)->nullable()->comment('外部订单号');
             $table->unsignedDecimal('price')->default(0);
             $table->unsignedInteger('amount')->default(1)->comment('数量');
             $table->unsignedDecimal('discount')->default(0)->comment('优惠金额');

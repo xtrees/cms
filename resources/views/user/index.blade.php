@@ -59,7 +59,8 @@
                         <div class="col">
                             <div class="font-weight-medium">{{ $user->coins }} 个</div>
                             <div class="text-muted">我的金币
-                                <a href="#" class="btn btn-sm btn-outline-primary float-end">充值</a>
+                                <a href="{{ route('users.wallet.coin') }}"
+                                   class="btn btn-sm btn-outline-primary float-end">充值</a>
                             </div>
                         </div>
                     </div>
@@ -118,7 +119,8 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="tab-pane active" id="basic-setting">
-                                    <form method="post" action="">
+                                    <form method="post" action="{{ route('users.update') }}">
+                                        @csrf
                                         <div class="form-group mb-3">
                                             <label class="form-label">邮箱</label>
                                             <div>
@@ -141,7 +143,8 @@
                                         <div class="form-group mb-3">
                                             <label class="form-label">昵称</label>
                                             <div>
-                                                <input name="name" title="name" type="text" class="form-control"
+                                                <input name="name" title="name" type="text"
+                                                       class="form-control @error('name') is-invalid @enderror"
                                                        value="{{ old('name',$user->name) }}"
                                                        placeholder="昵称">
                                             </div>
@@ -158,9 +161,12 @@
                                         <div class="form-group mb-3">
                                             <label class="form-label">手机</label>
                                             <div>
-                                                <input name="phone" title="phone" type="text" class="form-control"
+                                                <input name="phone" title="phone" type="number"
+                                                       class="form-control @error('phone') is-invalid @enderror"
+                                                       maxlength="11"
                                                        value="{{ old('phone',$user->phone) }}"
                                                        placeholder="手机号">
+                                                <div class="invalid-feedback">请输入正确的11位手机号</div>
                                             </div>
                                         </div>
                                         <div class="form-footer">
@@ -169,29 +175,33 @@
                                     </form>
                                 </div>
                                 <div class="tab-pane" id="password-setting">
-                                    <form method="post" action="">
+                                    <form method="post" action="{{ route('users.password') }}">
+                                        @csrf
                                         <div class="form-group mb-3">
                                             <label class="form-label">旧密码</label>
                                             <div>
                                                 <input name="old_password" title="old_password" type="password"
-                                                       class="form-control"
-                                                       placeholder="旧密码">
+                                                       class="form-control @error('old_password') is-invalid @enderror"
+                                                       placeholder="旧密码" value="{{ old('old_password') }}">
+                                                <div class="invalid-feedback">请输入正确旧密码</div>
                                             </div>
                                         </div>
                                         <div class="form-group mb-3">
                                             <label class="form-label">新密码</label>
                                             <div>
                                                 <input name="password" title="password" type="password"
-                                                       class="form-control"
+                                                       class="form-control @error('password') is-invalid @enderror"
                                                        placeholder="8-20位新密码">
+                                                <div class="invalid-feedback">请输入8-20位新密码</div>
                                             </div>
                                         </div>
                                         <div class="form-group mb-3">
                                             <label class="form-label">重复新密码</label>
                                             <div>
                                                 <input name="password_confirmation" title="password" type="password"
-                                                       class="form-control"
+                                                       class="form-control @error('password') is-invalid @enderror"
                                                        placeholder="重复新密码">
+                                                <div class="invalid-feedback">请再次输入新密码</div>
                                             </div>
                                         </div>
                                         <div class="form-footer">

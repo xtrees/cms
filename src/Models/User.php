@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
+use XTrees\CMS\Database\Factories\UserFactory;
 
 /**
  * XTrees\CMS\Models\User
@@ -64,6 +65,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'sex',
+        'phone'
     ];
 
     /**
@@ -107,5 +110,10 @@ class User extends Authenticatable
             return config('cms.image.gavatar.mirror') . md5($this->email);
         }
         return config('cms.image.avatar');
+    }
+
+    public static function factory(...$parameters): UserFactory
+    {
+        return UserFactory::new();
     }
 }

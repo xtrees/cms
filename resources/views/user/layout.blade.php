@@ -87,6 +87,16 @@
         </div>
         <div class="page-body">
             <div class="container-xl">
+                <div class="row">
+                    <div class="col-12">
+                        @if (flash()->message)
+                            <div class="alert alert-dismissible alert-{{ flash()->class }}" role="alert">
+                                {{ flash()->message }}
+                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
                 @yield('page-body')
             </div>
         </div>
@@ -110,6 +120,8 @@
         </footer>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta3/dist/js/tabler.min.js"></script>@yield('script')
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta3/dist/js/tabler.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+@yield('script')
 </body>
 </html>

@@ -13,7 +13,8 @@
     "keywords": ["Laravel", "CMS"],
     "require": {
         "illuminate/support": "~7|~8",
-        "overtrue/laravel-lang": "~5.0"
+        "overtrue/laravel-lang": "~5.0",
+        "spatie/laravel-flash": "^1.8"
     },
     "autoload": {
         "psr-4": {

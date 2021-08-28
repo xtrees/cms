@@ -17,4 +17,6 @@ class Offer extends Model
     const STATUS_PAID = 1;
     const STATUS_FINISHED = 2;
 
+    protected $fillable = ['type', 'origin', 'price', 'role_id', 'detail', 'duration', 'sort', 'display'];
+
 }
