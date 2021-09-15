@@ -113,7 +113,8 @@ class WalletRepo
     }
 
     /**
-     *
+     * @param $id
+     * @return Order|null
      */
     public function order($id): ?Order
     {

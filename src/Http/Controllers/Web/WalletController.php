@@ -14,17 +14,24 @@ use XTrees\CMS\Repositories\WalletRepo;
 class WalletController extends WebController
 {
     /**
-     *
+     * @param WalletRepo $repo
+     * @param Request $request
+     * @return View
      */
-    public function vips()
+    public function vips(WalletRepo $repo, Request $request): View
     {
+//        $user = $request->user();
+        $offers = $repo->vipOffers();
+        return view('cms::user.wallet.vip', compact('offers'));
 
     }
 
     /**
-     *
+     * @param WalletRepo $repo
+     * @param Request $request
+     * @return View
      */
-    public function coins(WalletRepo $repo, Request $request)
+    public function coins(WalletRepo $repo, Request $request): View
     {
         $user = $request->user();
         $offers = $repo->coinOffers();
@@ -35,11 +42,14 @@ class WalletController extends WebController
 
     /**
      * 订单记录
+     * @param WalletRepo $repo
+     * @param Request $request
+     * @return View
      */
-    public function orders(WalletRepo $repo, Request $request)
+    public function orders(WalletRepo $repo, Request $request): View
     {
         $user = $request->user();
-        $orders = $repo->order($user->id);
+        $orders = $repo->orders($user->id);
         return view('cms::user.wallet.order', compact('orders'));
     }
 
