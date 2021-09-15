@@ -6,6 +6,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Flash\Flash;
 use XTrees\CMS\Console\Commands\ExampleDataSeed;
 use XTrees\CMS\Facades\CMSFacade;
 use XTrees\CMS\Http\Middleware\Authenticate;
@@ -27,11 +28,18 @@ class CMSServiceProvider extends ServiceProvider
         /** @var Router $router */
         $router = $this->app->make(Router::class);
 
-        $router->aliasMiddleware('cms.auth',Authenticate::class);
+        $router->aliasMiddleware('cms.auth', Authenticate::class);
         if (config('cms.routes.enable', false)) {
             $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
             $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         }
+
+        //三方库的初始化
+        Flash::levels([
+            'success' => 'alert-success',
+            'warning' => 'alert-warning',
+            'danger' => 'alert-danger',
+        ]);
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {

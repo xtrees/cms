@@ -24,12 +24,16 @@
                 </div>
             </div>
         @endforeach
+        <form id="create-order" method="post" action="{{ route('users.wallet.order') }}">
+            @csrf
+            <input id="oid" type="hidden" name="offer">
+        </form>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="card mt-4">
                 <div class="card-header">
-                    <h3 class="card-title">我的充值订单</h3>
+                    <h3 class="card-title">我的金币流水</h3>
                 </div>
                 <div class="card-table table-responsive">
                     <table class="table card-table table-vcenter text-nowrap datatable">
@@ -37,7 +41,8 @@
                         <tr>
                             <th>NO.</th>
                             <th>编号</th>
-                            <th>金币数量</th>
+                            <th>产品</th>
+                            <th>价格</th>
                             <th>金额</th>
                             <th>支付方式</th>
                             <th>创建时间</th>
@@ -47,11 +52,13 @@
                         </tr>
                         </thead>
                         <tbody>
+                        @foreach($orders as $order)
                         <tr>
-                            <td><span class="text-muted">001401</span></td>
-                            <td><a href="invoice.html" class="text-reset" tabindex="-1">Design Works</a></td>
+                            <td><span class="text-muted">{{ $oreder->id }}</span></td>
+                            <td><a href="invoice.html" class="text-reset" tabindex="-1">{{ $order->no }}</a></td>
+                            <td>{{ $order->offer->name }}</td>
                             <td>
-                                Carlson Limited
+                                {{ $order->price }}
                             </td>
                             <td>
                                 87956621
@@ -66,6 +73,21 @@
                             <td class="text-end"></td>
                             <td class="text-end"></td>
                         </tr>
+                        @endforeach
+                        @foreach($transactions as $tr)
+                            <tr>
+                                <td><span class="text-muted">{{ $tr->id }}</span></td>
+                                <td>
+                                    {{ $tr->type }}
+                                </td>
+                                <td>{{ $tr->amount }}</td>
+                                <td>
+                                    87956621
+                                </td>
+                                <td>{{$tr->created_at}}</td>
+                                <td class="text-end"></td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -77,8 +99,8 @@
 @section('script')
     <script type="text/javascript">
         $('.recharge').click(function () {
-            let oid = $(this).data('id')
-            alert(oid)
+            $('#oid').val($(this).data('id'));
+            $('#create-order').submit();
         });
     </script>
 @endsection

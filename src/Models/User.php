@@ -3,6 +3,8 @@
 namespace XTrees\CMS\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
@@ -51,6 +53,12 @@ use XTrees\CMS\Database\Factories\UserFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereSource($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int $sex -1保密0女1男
+ * @property-read mixed $avatar_url
+ * @property-read \Illuminate\Database\Eloquent\Collection|\XTrees\CMS\Models\Order[] $order
+ * @property-read int|null $order_count
+ * @property-read \XTrees\CMS\Models\Role $role
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSex($value)
  */
 class User extends Authenticatable
 {
@@ -88,9 +96,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function role()
+    public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function order(): HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 
     public function getSexAttribute()

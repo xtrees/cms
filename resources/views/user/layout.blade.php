@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>@yield('title')-{{settings('site.name')}}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta3/dist/css/tabler.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@1.41.2/iconfont/tabler-icons.min.css">
 </head>
@@ -90,7 +91,7 @@
                 <div class="row">
                     <div class="col-12">
                         @if (flash()->message)
-                            <div class="alert alert-dismissible alert-{{ flash()->class }}" role="alert">
+                            <div class="alert alert-dismissible {{ flash()->class }}" role="alert">
                                 {{ flash()->message }}
                                 <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
                             </div>
@@ -121,7 +122,14 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta3/dist/js/tabler.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
 @yield('script')
 </body>
 </html>

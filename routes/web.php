@@ -68,11 +68,10 @@ Route::group(['middleware' => config('cms.routes.middleware')], function () {
         Route::get('history/favorites', [HistoryController::class, 'favorites'])->name('users.history.favorites');
 
         Route::get('wallet/vip', [WalletController::class, 'vips'])->name('users.wallet.vip');
-        Route::post('wallet/vip', [WalletController::class, 'createVIPOrder']);
         Route::get('wallet/coins', [WalletController::class, 'coins'])->name('users.wallet.coin');
-        Route::post('wallet/coins', [WalletController::class, 'createCoinOrder']);
-        Route::post('wallet/pay', [WalletController::class, 'pay'])->name('users.wallet.pay');
+        Route::get('wallet/cashier', [WalletController::class, 'cashier'])->name('users.wallet.cashier');
         Route::get('wallet/orders', [WalletController::class, 'orders'])->name('users.wallet.order');
+        Route::post('wallet/orders', [WalletController::class, 'createOrder']);
 
     });
 

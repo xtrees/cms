@@ -209,6 +209,7 @@ class CreateCmsTables extends Migration
         });
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
+            $table->string('title', 100)->nullable();
             $table->tinyInteger('type')->default(0);
             $table->unsignedDecimal('origin')->default(0)->comment('原价');
             $table->unsignedDecimal('price')->default(0)->comment('单价');
@@ -236,11 +237,31 @@ class CreateCmsTables extends Migration
             $table->timestamps();
         });
 
+        Schema::create('activities', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::create('coupons', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('order_id')->nullable();
+            $table->foreignId('activity_id');
+            $table->tinyInteger('type')->comment('优惠券类型');
+            $table->unsignedDecimal('amount')->default(0)->comment('折扣或优惠');
+            $table->unsignedDecimal('start_price')->default(0)->comment('最低入门金额');
+            $table->unsignedDecimal('max_discount')->default(0)->comment('最大优惠金额');
+            $table->timestamp('start_at')->nullable();
+            $table->timestamp('ended_at')->nullable();
+            $table->tinyInteger('status')->default(0);
+            $table->timestamps();
+        });
+
         Schema::create('purchased_contents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('content_id');
-            $table->unsignedInteger('coins')->default(0);
             $table->timestamps();
         });
 
