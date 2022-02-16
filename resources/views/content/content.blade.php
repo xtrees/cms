@@ -17,7 +17,6 @@
                     <i class="iconfont icon-icon-test6"></i>{{object_get($category,'name')}}
                 </a>
                 <span><i class="iconfont icon-icon-test1"></i>{{ $content->views }}</span>
-                <span><i class="iconfont icon-icon-test2"></i>{{ $content->favorites }}</span>
                 <span><i class="iconfont icon-icon-test3"></i>{{ $content->published_at }}</span>
             </header>
             <div class="post-body">

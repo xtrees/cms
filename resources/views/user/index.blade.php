@@ -40,7 +40,8 @@
                                 <small class="text-muted">{{ $user->role_expired_at ?? '无限制'}}</small>
                             </div>
                             <div class="text-muted">用户等级
-                                <a href="#" class="btn btn-sm btn-outline-primary float-end">升级</a>
+                                <a href="{{ route('users.wallet.vip') }}"
+                                   class="btn btn-sm btn-outline-primary float-end">升级</a>
                             </div>
                         </div>
                     </div>

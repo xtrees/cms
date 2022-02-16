@@ -54,23 +54,38 @@
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <i class="ti ti-heart" style="font-size: 20px;"></i>
                                 </span>
-                                <span class="nav-link-title">我的收藏</span>
+                                <span class="nav-link-title">收藏</span>
                             </a>
                         </li>
-                        <li class="nav-item {{route_active('users.wallet*')}}">
-                            <a class="nav-link" href="{{ route('users.wallet.coin') }}">
+                        <li class="nav-item dropdown {{route_active('users.wallet*')}}">
+                            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                               role="button" aria-expanded="false">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <i class="ti ti-coin" style="font-size: 20px;"></i>
                                 </span>
-                                <span class="nav-link-title">充值中心</span>
+                                <span class="nav-link-title">钱包</span>
                             </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item {{route_active('users.wallet.coin')}}"
+                                   href="{{ route('users.wallet.coin') }}">
+                                    金币
+                                </a>
+                                <a class="dropdown-item {{ route_active('users.wallet.vip') }}"
+                                   href="{{ route('users.wallet.vip') }}">
+                                    VIP
+                                </a>
+                                <a class="dropdown-item {{ route_active('users.wallet.order') }}"
+                                   href="{{ route('users.wallet.order') }}">
+                                    订单
+                                </a>
+                            </div>
                         </li>
                         <li class="nav-item {{route_active('users.home')}}">
                             <a class="nav-link" href="{{ route('users.home') }}">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <i class="ti ti-user" style="font-size: 20px;"></i>
                                 </span>
-                                <span class="nav-link-title">个人中心</span>
+                                <span class="nav-link-title">我的</span>
                             </a>
                         </li>
                     </ul>
@@ -129,6 +144,12 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+
+
+
+
+
 </script>
 @yield('script')
 </body>
