@@ -207,6 +207,7 @@ class CreateCmsTables extends Migration
             $table->morphs('purchasable');
             $table->timestamps();
         });
+
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
             $table->string('title', 100)->nullable();

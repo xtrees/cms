@@ -9,7 +9,6 @@ use XTrees\CMS\Http\Controllers\Controller;
 
 class WebController extends Controller
 {
-
     public function flashBack($message = '', $level = 'danger'): RedirectResponse
     {
         flash($message, $level);

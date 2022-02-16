@@ -302,6 +302,5 @@ class ExampleDataSeed extends Command
         foreach ($vips as $vip) {
             Offer::query()->firstOrCreate($vip['attr'], $vip['val']);
         }
-
     }
 }
